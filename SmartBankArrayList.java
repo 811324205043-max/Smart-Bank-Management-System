@@ -137,6 +137,33 @@ public class SmartBankArrayList{
     }
     System.out.println("Account Not Found.");
     }
+    static void balanceCheck(){
+    System.out.print("Enter Account ID : ");
+    int id=sc.nextInt();
+    for(Account acc:accounts){
+        if(acc.accountId==id){
+            System.out.println("\n----- ACCOUNT DETAILS -----");
+            System.out.println("Account ID      : " + acc.accountId);
+            System.out.println("Customer Name   : " + acc.customerName);
+            System.out.println("Balance         : " + acc.balance);
+            return;
+        }
+    }
+    System.out.println("Account Not Found.");
+    }
+    static void displayAccounts(){
+    if(accounts.isEmpty()){
+        System.out.println("No Accounts Available.");
+        return;
+    }
+    System.out.println("\n===== ALL ACCOUNTS =====");
+    for(Account acc:accounts){
+        System.out.println("----------------------------");
+        System.out.println("Account ID      : " + acc.accountId);
+        System.out.println("Customer Name   : " + acc.customerName);
+        System.out.println("Balance         : " + acc.balance);
+    }
+    }
     public static void main(String[] args){
         int choice;
         do{
@@ -144,6 +171,8 @@ public class SmartBankArrayList{
             System.out.println("1. Create Account");
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
+            System.out.println("4. Balance Check");
+            System.out.println("5. Display All Accounts");
             System.out.println("4. Exit");
             System.out.print("Enter Choice : ");
             while(!sc.hasNextInt()){
@@ -163,12 +192,18 @@ public class SmartBankArrayList{
               withdraw();
                break;
             case 4:
-               System.out.println("Thank You...");
+              balanceCheck();
                break;
+            case 5:
+              displayAccounts();
+                break;
+            case 6:
+              System.out.println("Thank You...");
+                break;
             default:
                 System.out.println("Invalid Choice.");
         } 
     }
-        while(choice!=4);
+        while(choice!=6);
     }
 }
