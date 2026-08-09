@@ -1,5 +1,15 @@
 import java.util.HashMap;
 import java.util.Scanner;
+class AccountNotFoundException extends Exception{
+    AccountNotFoundException(String message){
+        super(message);
+    }
+}
+class InsufficientFundsException extends Exception{
+    InsufficientFundsException(String message){
+        super(message);
+    }
+}
 class Account{
     int accountId;
     String customerName;
@@ -67,12 +77,86 @@ public class BankConsoleAppHashMap{
         accounts.put(id,account);
         System.out.println("\nAccount Created Successfully.");
     }
+    static void deposit(){
+    System.out.print("Enter Account ID : ");
+    int id=sc.nextInt();
+    try{
+        Account account=accounts.get(id);
+        if(account==null){
+            throw new AccountNotFoundException("Account not found.");
+        }
+        double amount;
+        while(true){
+            System.out.print("Enter Deposit Amount : ");
+            if(sc.hasNextDouble()){
+                amount=sc.nextDouble();
+                if(amount>0){
+                    break;
+                }
+                else{
+                    System.out.println("Amount must be greater than 0.");
+                }
+            }
+            else{
+                System.out.println("Invalid Amount.");
+                sc.next();
+            }
+        }
+        account.balance+=amount;
+        System.out.println("Deposit Successful.");
+        System.out.println("Updated Balance : "+account.balance);
+    }
+    catch (AccountNotFoundException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    }
+    static void withdraw(){
+    System.out.print("Enter Account ID : ");
+    int id=sc.nextInt();
+    try{
+        Account account=accounts.get(id);
+        if(account==null){
+            throw new AccountNotFoundException("Account not found.");
+        }
+        double amount;
+        while(true){
+            System.out.print("Enter Withdraw Amount : ");
+            if(sc.hasNextDouble()){
+                amount=sc.nextDouble();
+                if(amount>0){
+                    break;
+                }
+                else{
+                    System.out.println("Amount must be greater than 0.");
+                }
+            }
+            else{
+                System.out.println("Invalid Amount.");
+                sc.next();
+            }
+        }
+        if(amount>account.balance){
+            throw new InsufficientFundsException("Insufficient balance.");
+        }
+        account.balance-=amount;
+        System.out.println("Withdrawal Successful.");
+        System.out.println("Updated Balance : " + account.balance);
+    }
+    catch(AccountNotFoundException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    catch(InsufficientFundsException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    }
     public static void main(String[] args){
         int choice;
         do{
             System.out.println("\n========== SECURE BANK ==========");
             System.out.println("1. Create Account");
-            System.out.println("2. Exit");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Exit");
             System.out.print("Enter Choice : ");
             while(!sc.hasNextInt()){
                 System.out.println("Invalid Choice. Numbers only.");
@@ -80,17 +164,24 @@ public class BankConsoleAppHashMap{
                 System.out.print("Enter Choice : ");
             }
             choice=sc.nextInt();
-            switch (choice){
-                case 1:
-                    createAccount();
-                    break;
-                case 2:
-                    System.out.println("Thank You...");
-                    break;
-                default:
-                    System.out.println("Invalid Choice.");
+            switch(choice){
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                deposit();
+                break;
+            case 3:
+                withdraw();
+                break;
+            case 4:
+                System.out.println("Thank You...");
+                break;
+            default:
+                System.out.println("Invalid Choice.");
             }
         }
-        while(choice!=2);
-    }
-}
+        while(choice!=4);
+        }
+    }    
+        
