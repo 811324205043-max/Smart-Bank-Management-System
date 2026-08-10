@@ -149,6 +149,46 @@ public class BankConsoleAppHashMap{
         System.out.println("Error: " + e.getMessage());
     }
     }
+    static void checkBalance(){
+    System.out.print("Enter Account ID : ");
+    int id=sc.nextInt();
+    try{
+        Account account=accounts.get(id);
+        if(account==null){
+            throw new AccountNotFoundException("Account not found.");
+        }
+        System.out.println("\n========== ACCOUNT DETAILS ==========");
+        System.out.println("Account ID     : " + account.accountId);
+        System.out.println("Customer Name  : " + account.customerName);
+        System.out.println("Balance        : " + account.balance);
+    }
+    catch(AccountNotFoundException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    }
+    static void closeAccount(){
+    System.out.print("Enter Account ID : ");
+    int id=sc.nextInt();
+    try{
+        Account account=accounts.get(id);
+        if(account==null){
+            throw new AccountNotFoundException("Account not found.");
+        }
+        System.out.println("Account found for: " + account.customerName);
+        System.out.print("Are you sure you want to close this account? (Y/N): ");
+        String confirmation=sc.next();
+        if(confirmation.equalsIgnoreCase("Y")){
+            accounts.remove(id);
+            System.out.println("Account closed successfully.");
+        }
+        else{
+            System.out.println("Account closure cancelled.");
+        }
+    }
+    catch(AccountNotFoundException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    }
     public static void main(String[] args){
         int choice;
         do{
@@ -156,7 +196,9 @@ public class BankConsoleAppHashMap{
             System.out.println("1. Create Account");
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
-            System.out.println("4. Exit");
+            System.out.println("4. Check Balance");
+            System.out.println("5. Close Account");
+            System.out.println("6. Exit");
             System.out.print("Enter Choice : ");
             while(!sc.hasNextInt()){
                 System.out.println("Invalid Choice. Numbers only.");
@@ -175,13 +217,19 @@ public class BankConsoleAppHashMap{
                 withdraw();
                 break;
             case 4:
+                checkBalance();
+                break;
+            case 5:
+                closeAccount();
+                break;
+            case 6:
                 System.out.println("Thank You...");
                 break;
             default:
                 System.out.println("Invalid Choice.");
             }
         }
-        while(choice!=4);
+        while(choice!=6);
         }
     }    
         
